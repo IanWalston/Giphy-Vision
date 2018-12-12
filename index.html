@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Bootstrap Example</title>
+    <title>Giphy Project</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
         crossorigin="anonymous">
     <link rel="stylesheet" href="style.css">
@@ -12,55 +12,100 @@
 </head>
 
 <body>
+    <h1>Top Box Office (US) Weekend of December 7 - 9, 2018
+    </h1>
     <div id="buttonsDiv"></div>
-    <div id="gifDiv"></div>
+    <form id="add-topic">
+        <label for="topic-input">Add another topic</label>
+        <input type="text" id="topic-input"><br>
+
+        <input id="add-the-topic" type="submit" value="Add Topic">
+    </form>
+    <div id="gifsDiv"></div>
+
     <script>
-        const emotionsArray = ["happiness",
-            "trust",
-            "fear",
-            "surprise",
-            "sadness",
-            "disgust",
-            "anger",
-            "anticipation"
-        ]
-            
-            // define getGifs Function
-                    var getGifs = (word) => {
-                        //getting gueryURL. currently searches for dogs
-                        const apiKey = "P1kFSxY5ndG957IWKgEycqXpTX7rptME"
-                        var queryURL = `https://api.giphy.com/v1/gifs/search?q=${word}&api_key=${apiKey}`;
-            
-                        //making an ajax call 
-                        $.ajax({
-                            url: queryURL,
-                            method: "GET"
-                        }).then(function (response) {
-                            console.log(response);
-                            console.log(response.data.forEach((ele) => {
-                                $("#gifDiv").append(`<img src=${ele.images.original.url}>`)
-                            }));
-                        });
-                    }
+        const array = [
+            "Ralph Breaks the Internet",
+            "The Grinch",
+            "Creed II",
+            "Fantastic Beasts",
+            "Bohemian Rhapsody",
+            "Instant Family",
+            "Green Book",
+            "Robin Hood",
+            "The Possession of Hannah Grace",
+            "Widows"]
 
+        // define getGifs Function
+        var getGifs = (word) => {
+            //getting gueryURL. currently searches for dogs
+            const apiKey = "P1kFSxY5ndG957IWKgEycqXpTX7rptME"
+            var queryURL = `https://api.giphy.com/v1/gifs/search?q=${word}&api_key=${apiKey}&limit=10`;
 
-        //make a button in the buttonsDiv for each emotion in the emotionsArray
-        emotionsArray.forEach((emotion) => {
-            var newButton = $("<button>")
-            newButton.text(emotion)
-            newButton.on("click",getGifs(emotion))
-            $("#buttonsDiv").append(newButton)
-        })            
+            $('#gifsDiv').empty()
 
+            //making an ajax call 
+            $.ajax({
+                url: queryURL,
+                method: "GET"
+            }).then(function (response) {
+                response.data.forEach((data) => {
+                    var that = this
+                    var div = $("<div>")
+                    var gif = $("<img>")
+                    gif.attr("src", data.images.original_still.url)
+                    gif.on("click", (that) => {
+                        gifPausePlay(that)
+                    })
+                    var info = $("<p>")
+                    info.html(
+                        `Title: ${data.title}.<br>
+                        Rating: ${data.rating}`
+                    )
+                    div.append(gif)
+                    div.append(info)
+                    $("#gifsDiv").append(div)
+                })
+            })
+        }
+
+        var gifPausePlay = (that) => {
+            img = $(that.currentTarget)
+
+            if (img.hasClass("playing")) {
+                img[0].src = img[0].src.replace(/\.gif/i, "_s.gif")
+                img.removeClass("playing")
+            }
+            else {
+                img[0].src = img[0].src.replace(/\_s.gif/i, ".gif")
+                img.addClass("playing")
+            }
+        }
+
+        //make a button in the buttonsDiv for each emotion in the array
+        var makeButtons = () => {
+            $("#buttonsDiv").empty()
+            array.forEach((emotion) => {
+                var newButton = $("<button>")
+                newButton.text(emotion)
+                newButton.on("click", () => getGifs(emotion))
+                $("#buttonsDiv").append(newButton)
+            })
+        }
+
+        //adding functionallity to button adding form
+        $("#add-the-topic").on("click", () => {
+            event.preventDefault();
+           userInput=$("#topic-input").val()
+           array.push(userInput)
+           makeButtons()
+        })
+
+        //making buttons for topics in initial array
+        makeButtons()
 
     </script>
 </body>
-<!-- bootstrap -->
-<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-    crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
-    crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
-    crossorigin="anonymous"></script>
+
 
 </html>
