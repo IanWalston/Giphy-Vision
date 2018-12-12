@@ -12,37 +12,41 @@
 </head>
 
 <body>
-    <h1>Top Box Office (US) Weekend of December 7 - 9, 2018
-    </h1>
-    <div id="buttonsDiv"></div>
-    <form id="add-topic">
-        <label for="topic-input">Add another topic</label>
-        <input type="text" id="topic-input"><br>
+    <nav class="navbar navbar-light bg-light">
+        <h1>Random GIFs with Google Vision analysis</h1>
 
-        <input id="add-the-topic" type="submit" value="Add Topic">
-    </form>
-    <div id="gifsDiv"></div>
+    </nav>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3">
+                <form id="add-topic">
+                    <label for="topic-input">Add another topic</label>
+                    <input type="text" id="topic-input"><br>
 
+                    <input id="add-the-topic" type="submit" value="Add Topic">
+                </form>
+                <div id="buttonsDiv"></div>
+            </div>
+            <div class="col-md-9">
+                <div id="gifsDiv"></div>
+            </div>
+        </div>
+    </div>
     <script>
-        const array = [
-            "Ralph Breaks the Internet",
-            "The Grinch",
-            "Creed II",
-            "Fantastic Beasts",
-            "Bohemian Rhapsody",
-            "Instant Family",
-            "Green Book",
-            "Robin Hood",
-            "The Possession of Hannah Grace",
-            "Widows"]
+  
 
+        const array = ["It's Always Sunny In Philidelphia", "Bojack Horseman", "30 Rock", "Parks and Rec", "The Eric Andre Show", "My little Pony: Friendship is Magic", "Spongebob Squarepants", "King of the Hill"]
+
+        var limit = 10
         // define getGifs Function
         var getGifs = (word) => {
             //getting gueryURL. currently searches for dogs
-            const apiKey = "P1kFSxY5ndG957IWKgEycqXpTX7rptME"
-            var queryURL = `https://api.giphy.com/v1/gifs/search?q=${word}&api_key=${apiKey}&limit=10`;
 
-            $('#gifsDiv').empty()
+
+            const apiKey = "P1kFSxY5ndG957IWKgEycqXpTX7rptME"
+            var queryURL = `https://api.giphy.com/v1/gifs/search?q=${word}&api_key=${apiKey}&limit=${limit}`;
+
+
 
             //making an ajax call 
             $.ajax({
@@ -50,7 +54,10 @@
                 method: "GET"
             }).then(function (response) {
                 response.data.forEach((data) => {
+                    console.log(response)
                     var that = this
+
+                    //making a div with image and gif title, rating
                     var div = $("<div>")
                     var gif = $("<img>")
                     gif.attr("src", data.images.original_still.url)
@@ -65,13 +72,43 @@
                     div.append(gif)
                     div.append(info)
                     $("#gifsDiv").append(div)
+
+                    //this alternative to an ajax call from https://stackoverflow.com/users/4891910/a-moore
+                    var b = JSON.stringify({ "requests": [{ "image": { "source": { "imageUri": data.images.original_still.url } }, "features": [{ "type": "LABEL_DETECTION", "maxResults": 5 }] }] });
+                    var e = new XMLHttpRequest;
+
+                  //  e.onload = function () { console.log(e.responseText) };
+                    e.open("POST", "https://vision.googleapis.com/v1/images:annotate?key=AIzaSyA9EHeI2lrYJnjfEMhI0rU-J8yyfAOSOAs", !0);
+                    e.send(b)
+                    //end of code from https://stackoverflow.com/users/4891910/a-moore
+
+
+                    //making a div with information from google vision
+                    e.onload = function () {
+                        
+                    
+                        const vision = JSON.parse(e.response)
+                        console.log(vision)};
+
+
+
                 })
+
+
+                // <!-- this shows 256 gifs of the current topic. I disabled this to limit the calling to the google api
+                //                 var btn = $("<button>")
+                //                 btn.addClass("btn btn-primary butn")
+                //                 btn.text("Get More Gifs")
+                //                 btn.on("click", () => {
+                //                     limit = 256
+                //                     getGifs(word)})
+                //                 $("#gifsDiv").append(btn) -->
             })
         }
 
+        //on click function that switches between playing and paused gif
         var gifPausePlay = (that) => {
             img = $(that.currentTarget)
-
             if (img.hasClass("playing")) {
                 img[0].src = img[0].src.replace(/\.gif/i, "_s.gif")
                 img.removeClass("playing")
@@ -82,23 +119,33 @@
             }
         }
 
-        //make a button in the buttonsDiv for each emotion in the array
+        //make a button in the buttonsDiv for each item in the array
         var makeButtons = () => {
             $("#buttonsDiv").empty()
-            array.forEach((emotion) => {
-                var newButton = $("<button>")
-                newButton.text(emotion)
-                newButton.on("click", () => getGifs(emotion))
-                $("#buttonsDiv").append(newButton)
+            array.forEach((item) => {
+                var btn = $("<button>")
+                btn.text(item)
+                btn.on("click", () => {
+                    $('#gifsDiv').empty()
+                    limit = 10
+                    getGifs(item)
+                })
+                btn.addClass("btn btn-primary butn")
+
+                var row = $("<div>")
+                row.addClass("row")
+                row.append(btn)
+
+                $("#buttonsDiv").append(row)
             })
         }
 
         //adding functionallity to button adding form
         $("#add-the-topic").on("click", () => {
             event.preventDefault();
-           userInput=$("#topic-input").val()
-           array.push(userInput)
-           makeButtons()
+            userInput = $("#topic-input").val()
+            array.push(userInput)
+            makeButtons()
         })
 
         //making buttons for topics in initial array
