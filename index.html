@@ -33,7 +33,7 @@
         </div>
     </div>
     <script>
-  
+
 
         const array = ["It's Always Sunny In Philidelphia", "Bojack Horseman", "30 Rock", "Parks and Rec", "The Eric Andre Show", "My little Pony: Friendship is Magic", "Spongebob Squarepants", "King of the Hill"]
 
@@ -71,13 +71,13 @@
                     )
                     div.append(gif)
                     div.append(info)
-                    $("#gifsDiv").append(div)
+                 
 
                     //this alternative to an ajax call from https://stackoverflow.com/users/4891910/a-moore
                     var b = JSON.stringify({ "requests": [{ "image": { "source": { "imageUri": data.images.original_still.url } }, "features": [{ "type": "LABEL_DETECTION", "maxResults": 5 }] }] });
                     var e = new XMLHttpRequest;
 
-                  //  e.onload = function () { console.log(e.responseText) };
+                    //  e.onload = function () { console.log(e.responseText) };
                     e.open("POST", "https://vision.googleapis.com/v1/images:annotate?key=AIzaSyA9EHeI2lrYJnjfEMhI0rU-J8yyfAOSOAs", !0);
                     e.send(b)
                     //end of code from https://stackoverflow.com/users/4891910/a-moore
@@ -85,13 +85,20 @@
 
                     //making a div with information from google vision
                     e.onload = function () {
-                        
-                    
+
+                        var visionDiv = $("<div>")
                         const vision = JSON.parse(e.response)
-                        console.log(vision)};
 
-
-
+                        vision.responses.forEach((response) => {
+                            response.labelAnnotations.forEach((annotation) => {
+                                console.log(annotation.description)
+                                visionDiv.append($("<p>").text(annotation.description))
+                            })
+                        })
+                        console.log(visionDiv)
+                        $(div).append(visionDiv)
+                        $("#gifsDiv").append(div)
+                    }
                 })
 
 
