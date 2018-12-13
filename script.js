@@ -27,7 +27,7 @@ var getGifs = (word) => {
             gif.on("click", (that) => gifPausePlay(that))
             div.append(gif)
             div.append($("<h3>").text(data.title))
-         
+
 
             var row = $("<div class='row'>")
 
@@ -46,6 +46,7 @@ var getGifs = (word) => {
 
 
             //making a div with information from google vision
+
             e.onload = function () {
 
                 var visionDiv = $("<div>")
@@ -67,7 +68,22 @@ var getGifs = (word) => {
                 $(div).append(visionDiv)
                 $("#gifsDiv").prepend(div)
                 $("#gifsDiv").prepend("<hr>")
-                $("#visionSummeryDiv").text(JSON.stringify(visionCount))
+
+                var visSumDiv = $("<div>")
+
+                visSumDiv.append($("<h3>").text(`Total Descriptions`))
+
+                visSumDiv.append($("<p>").text(`Out of the ${limit} GIFs, here is how many times each description was found by Google Vision.`))
+
+                Object.keys(visionCount).forEach((key) => {
+                    visSumDiv.append($("<p>").text(`${key}: ${visionCount[key]}`))
+
+                    console.log(visSumDiv)
+                })
+
+                $("#visionSummeryDiv").html(visSumDiv)
+
+                // $("#visionSummeryDiv").text(JSON.stringify(visionCount).replace(/[{}"]/g, "").replace(/,/g, ", "))
             }
         })
         //this gets 256 gifs from the current topic
@@ -106,7 +122,7 @@ var makeButtons = () => {
             limit = 10
             getGifs(item)
         })
-        btn.addClass("btn btn-primary butn")
+        btn.addClass(`btn-primary btn${Math.floor(Math.random() * 4)}`)
 
         var row = $("<div>")
         row.addClass("row")

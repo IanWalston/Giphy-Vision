@@ -1,5 +1,6 @@
 body{
     background:#e6ecf0 !important;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 h3{
     text-transform:capitalize;
@@ -7,10 +8,22 @@ h3{
 a{
     color:#214496
 }
-.butn{
+.btn1, .btn2, .btn3, .btn0{
     width:100%;
     margin:4px 32px 4px 8px;
+}
+
+.btn0{
     background-image: linear-gradient(to top left, #127734, #234099) !important;
+}
+.btn1{
+    background-image: linear-gradient(to top right, #127734, #234099) !important;
+}
+.btn2{
+    background-image: linear-gradient(to bottom left, #127734, #234099) !important;
+}
+.btn3{
+    background-image: linear-gradient(to bottom right, #127734, #234099) !important;
 }
 .col-md-9{
     background:#e6ecf0 !important;
@@ -18,4 +31,9 @@ a{
 .mynavbar{
     background-image: linear-gradient(to bottom right, #127734, #234099) !important;
     color: white
+}
+
+#visionSummeryDiv{
+    color:#18367a;
+    line-height:1;
 }

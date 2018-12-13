@@ -22,6 +22,8 @@
 
 #hidn
 hidn.txt
+sampleResults
+
 # Logs and databases #
 ######################
 *.log
