@@ -1,4 +1,4 @@
-const array = ["It's Always Sunny In Philidelphia", "Bojack Horseman", "30 Rock", "Blackish", "Parks and Rec", "The Eric Andre Show", "My little Pony: Friendship is Magic", "Spongebob Squarepants", "King of the Hill"]
+const array = ["It's Always Sunny In Philidelphia", "Bojack Horseman", "30 Rock", "Blackish", "Parks and Rec", "The Eric Andre Show", "My little Pony: Friendship is Magic", "Spongebob Squarepants", "King of the Hill", "Insecure", "Broad City"]
 var limit = 10
 const apiKey = "P1kFSxY5ndG957IWKgEycqXpTX7rptME"
 
@@ -12,6 +12,10 @@ var getGifs = (word) => {
         url: queryURL,
         method: "GET"
     }).then(function (response) {
+
+        var visionCount = {};
+
+
         response.data.forEach((data) => {
             //defining a variable for this image that will later be used by an inner function called 'gifPausePlay'
             var that = this
@@ -23,7 +27,14 @@ var getGifs = (word) => {
             gif.on("click", (that) => gifPausePlay(that))
             div.append(gif)
             div.append($("<h3>").text(data.title))
-            div.append($("<p>").text(`Rating: ${data.rating}`))
+            console.log(data)
+
+            var row = $("<div class='row'>")
+
+            row.append($("<p class='col-md-6'>").text(`Rating: ${data.rating}`))
+            row.append($("<a class='col-md-6'>").text("Source").attr("href", data.source))
+
+            div.append(row)
 
             //this alternative to an ajax call from https://stackoverflow.com/users/4891910/a-moore
             var b = JSON.stringify({ "requests": [{ "image": { "source": { "imageUri": data.images.original_still.url } }, "features": [{ "type": "LABEL_DETECTION", "maxResults": 5 }] }] });
@@ -43,23 +54,35 @@ var getGifs = (word) => {
 
                 vision.responses.forEach((response) => {
                     response.labelAnnotations.forEach((annotation) => {
-                        visionDiv.append(annotation.description + ", ")
+
+                        //count occurences of descriptions 
+                        if(!visionCount[annotation.description]){
+                            visionCount[annotation.description]=1
+                        }
+
+                        visionCount[annotation.description]++
+                        
+                        
+                        
+                        console.log(visionCount)
+                        visionDiv.append(`(${annotation.score.toFixed(2) * 100}%)${annotation.description}, `)
                     })
                 })
                 $(div).append(visionDiv)
-                $("#gifsDiv").append(div)
-                $("#gifsDiv").append("<hr>")
+                $("#gifsDiv").prepend(div)
+                $("#gifsDiv").prepend("<hr>")
 
             }
         })
-        // <!-- this shows 256 gifs of the current topic. I disabled this to limit the calling to the google api
-        //                 var btn = $("<button>")
-        //                 btn.addClass("btn btn-primary butn")
-        //                 btn.text("Get More Gifs")
-        //                 btn.on("click", () => {
-        //                     limit = 256
-        //                     getGifs(word)})
-        //                 $("#gifsDiv").append(btn) -->
+        //this shows 256 gifs of the current topic. I disabled this to limit the calling to the google api
+        var btn = $("<button>")
+        btn.addClass("btn btn-primary butn")
+        btn.text("Get More Gifs")
+        btn.on("click", () => {
+            limit = 256
+            getGifs(word)
+        })
+        $("#gifsDiv").append(btn)
     })
 }
 

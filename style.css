@@ -1,8 +1,21 @@
-.butn{
-    width:100%;
-    margin:4px
+body{
+    background:#e6ecf0 !important;
 }
-
 h3{
     text-transform:capitalize;
+}
+a{
+    color:#214496
+}
+.butn{
+    width:100%;
+    margin:4px 32px 4px 8px;
+    background-image: linear-gradient(to top left, #13c54e, #234099) !important;
+}
+.col-md-9{
+    background:#e6ecf0 !important;
+}
+.mynavbar{
+    background-image: linear-gradient(to bottom right, #13c54e, #234099) !important;
+    color: white
 }
