@@ -10,12 +10,12 @@ a{
 .butn{
     width:100%;
     margin:4px 32px 4px 8px;
-    background-image: linear-gradient(to top left, #13c54e, #234099) !important;
+    background-image: linear-gradient(to top left, #127734, #234099) !important;
 }
 .col-md-9{
     background:#e6ecf0 !important;
 }
 .mynavbar{
-    background-image: linear-gradient(to bottom right, #13c54e, #234099) !important;
+    background-image: linear-gradient(to bottom right, #127734, #234099) !important;
     color: white
 }
