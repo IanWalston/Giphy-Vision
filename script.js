@@ -27,7 +27,7 @@ var getGifs = (word) => {
             gif.on("click", (that) => gifPausePlay(that))
             div.append(gif)
             div.append($("<h3>").text(data.title))
-            console.log(data)
+         
 
             var row = $("<div class='row'>")
 
@@ -56,25 +56,21 @@ var getGifs = (word) => {
                     response.labelAnnotations.forEach((annotation) => {
 
                         //count occurences of descriptions 
-                        if(!visionCount[annotation.description]){
-                            visionCount[annotation.description]=1
+                        if (!visionCount[annotation.description]) {
+                            visionCount[annotation.description] = 1
                         }
-
                         visionCount[annotation.description]++
-                        
-                        
-                        
-                        console.log(visionCount)
+
                         visionDiv.append(`(${annotation.score.toFixed(2) * 100}%)${annotation.description}, `)
                     })
                 })
                 $(div).append(visionDiv)
                 $("#gifsDiv").prepend(div)
                 $("#gifsDiv").prepend("<hr>")
-
+                $("#visionSummeryDiv").text(JSON.stringify(visionCount))
             }
         })
-        //this shows 256 gifs of the current topic. I disabled this to limit the calling to the google api
+        //this gets 256 gifs from the current topic
         var btn = $("<button>")
         btn.addClass("btn btn-primary butn")
         btn.text("Get More Gifs")
