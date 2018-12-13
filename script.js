@@ -1,11 +1,10 @@
 const array = ["It's Always Sunny In Philidelphia", "Bojack Horseman", "30 Rock", "Blackish", "Parks and Rec", "The Eric Andre Show", "My little Pony: Friendship is Magic", "Spongebob Squarepants", "King of the Hill"]
-
 var limit = 10
+const apiKey = "P1kFSxY5ndG957IWKgEycqXpTX7rptME"
+
 // define getGifs Function
 var getGifs = (word) => {
     //getting gueryURL. currently searches for dogs
-
-    const apiKey = "P1kFSxY5ndG957IWKgEycqXpTX7rptME"
     var queryURL = `https://api.giphy.com/v1/gifs/search?q=${word}&api_key=${apiKey}&limit=${limit}`;
 
     //making an ajax call 
@@ -14,30 +13,21 @@ var getGifs = (word) => {
         method: "GET"
     }).then(function (response) {
         response.data.forEach((data) => {
-
+            //defining a variable for this image that will later be used by an inner function called 'gifPausePlay'
             var that = this
 
             //making a div with image and gif title, rating
             var div = $("<div>")
             var gif = $("<img>")
             gif.attr("src", data.images.original_still.url)
-            gif.on("click", (that) => {
-                gifPausePlay(that)
-            })
-// <!-- 
-//                     var info = $("<p>")
-//                     info.html(
-//                         `Title: ${data.title}.<br>
-//                         Rating: ${data.rating}`
-//                     ) -->
+            gif.on("click", (that) => gifPausePlay(that))
             div.append(gif)
             div.append($("<h3>").text(data.title))
             div.append($("<p>").text(`Rating: ${data.rating}`))
-         
+
             //this alternative to an ajax call from https://stackoverflow.com/users/4891910/a-moore
             var b = JSON.stringify({ "requests": [{ "image": { "source": { "imageUri": data.images.original_still.url } }, "features": [{ "type": "LABEL_DETECTION", "maxResults": 5 }] }] });
             var e = new XMLHttpRequest;
-
             //  e.onload = function () { console.log(e.responseText) };
             e.open("POST", "https://vision.googleapis.com/v1/images:annotate?key=AIzaSyA9EHeI2lrYJnjfEMhI0rU-J8yyfAOSOAs", !0);
             e.send(b)
@@ -53,17 +43,15 @@ var getGifs = (word) => {
 
                 vision.responses.forEach((response) => {
                     response.labelAnnotations.forEach((annotation) => {
-                        visionDiv.append(annotation.description + ", " )
+                        visionDiv.append(annotation.description + ", ")
                     })
                 })
                 $(div).append(visionDiv)
                 $("#gifsDiv").append(div)
                 $("#gifsDiv").append("<hr>")
-                
+
             }
         })
-
-
         // <!-- this shows 256 gifs of the current topic. I disabled this to limit the calling to the google api
         //                 var btn = $("<button>")
         //                 btn.addClass("btn btn-primary butn")
