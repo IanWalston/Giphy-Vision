@@ -25,35 +25,38 @@
             </div>
         </div>
     </nav>
+
     <div class="container">
         <div class="row">
-            <div class="col-md-3">
-                <div class="row">
-
-                </div>
+            <div class="col-md-3" id="side-bar">
                 <div class="row">
                     <form id="add-topic">
                         <label for="topic-input">Add another topic</label>
                         <input type="text" id="topic-input"><br>
-
                         <input id="add-the-topic" type="submit" value="Add Topic">
                     </form>
                     <div id="buttonsDiv" class="img-fluid"></div>
-                    
                     <div id="visionSummeryDiv"></div>
-
                 </div>
             </div>
-            <div class="col-md-9">
 
- 
-
-                <div id="gifsDiv"></div>
+            <div class="col-md-9" id="main-feed">
+                <div class="row">
+                    <div id="gifsDiv"></div>
+                </div>
+                <div clas="row">
+                    <div id="feedEndDiv"></div>
+                </div>
+                <div class="row">
+                    <div id="loadingDiv"></div>
+                </div>
             </div>
         </div>
     </div>
+    </div>
 
     <script src="script.js"></script>
+    <script src="getGifs.js"></script>
 </body>
 
 </html>
