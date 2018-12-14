@@ -1,0 +1,47 @@
+body{
+    background:#e6ecf0 !important;
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    line-height: 1.6;
+    font-weight: 550
+}
+
+h1{
+    font-size:3em;
+    font-weight: 550
+}
+h3{
+    text-transform:capitalize;
+}
+a{
+    color:#214496
+}
+.mynavbar{
+     background-image: linear-gradient(to bottom right, #127734, #234099) !important;
+     color: white
+}
+.btn1, .btn2, .btn3, .btn0{
+    width:100%;
+    margin:4px 32px 4px 8px;
+}
+
+/* these classes are used to generated random linear gradient backgrounds for the buttons */
+.btn0{background-image: linear-gradient(to top left, #127734, #234099) !important;}
+.btn1{background-image: linear-gradient(to top right, #127734, #234099) !important;}
+.btn2{background-image: linear-gradient(to bottom left, #127734, #234099) !important;}
+.btn3{background-image: linear-gradient(to bottom right, #127734, #234099) !important;}
+
+.btn-more{
+    width:100%;
+    height: 6em;
+    background-image: linear-gradient(to bottom right, #127734, #234099) !important;
+}
+
+#visionSummeryDiv{
+    color:#18367a;
+    line-height:1;
+}
+
+#loadingDiv{
+    color:darkolivegreen;
+    font-size: 2em
+}
