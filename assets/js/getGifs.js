@@ -38,50 +38,50 @@ var getGifs = (word) => {
 
             //making a call to the Google Vision Api
             //this alternative to an ajax call from https://stackoverflow.com/users/4891910/a-moore
-            var visionApiOptions = JSON.stringify({ "requests": [{ "image": { "source": { "imageUri": data.images.original_still.url } }, "features": [{ "type": "LABEL_DETECTION", "maxResults": 5 }] }] });
-            var visionApiRequest = new XMLHttpRequest;
+            // var visionApiOptions = JSON.stringify({ "requests": [{ "image": { "source": { "imageUri": data.images.original_still.url } }, "features": [{ "type": "LABEL_DETECTION", "maxResults": 5 }] }] });
+            // var visionApiRequest = new XMLHttpRequest;
             //  visionApiRequest.onload = function () { console.log(visionApiRequest.responseText) };
-            visionApiRequest.open("POST", "https://vision.googleapis.com/v1/images:annotate?key=AIzaSyA9EHeI2lrYJnjfEMhI0rU-J8yyfAOSOAs", !0);
-            visionApiRequest.send(visionApiOptions)
+            // visionApiRequest.open("POST", "https://vision.googleapis.com/v1/images:annotate?key=AIzaSyA9EHeI2lrYJnjfEMhI0rU-J8yyfAOSOAs", !0);
+            // visionApiRequest.send(visionApiOptions)
             //end of code from https://stackoverflow.com/users/4891910/a-moore
 
 
             //making a div with information from google vision
-            visionApiRequest.onload = function () {
-                var visionDiv = $("<div>")
-                const vision = JSON.parse(visionApiRequest.response)
-                visionDiv.append($("<b>").text("Google Vision Annotation:"))
+            // visionApiRequest.onload = function () {
+            //     var visionDiv = $("<div>")
+            //     const vision = JSON.parse(visionApiRequest.response)
+            //     visionDiv.append($("<b>").text("Google Vision Annotation:"))
 
-                //iterating through each vision response for a single gif
-                vision.responses.forEach((response) => {
-                    response.labelAnnotations.forEach((annotation) => {
+            //     //iterating through each vision response for a single gif
+            //     vision.responses.forEach((response) => {
+            //         response.labelAnnotations.forEach((annotation) => {
                         
-                        //write percentage from proportion provided by the Vision response
-                        visionDiv.append(`(${annotation.score.toFixed(2) * 100}%)${annotation.description}, `)
+            //             //write percentage from proportion provided by the Vision response
+            //             visionDiv.append(`(${annotation.score.toFixed(2) * 100}%)${annotation.description}, `)
            
-                        //start count of a label(description) from Vision response if its the first time foun 
-                        if (!visionCount[annotation.description]) {visionCount[annotation.description] = 1}
-                        //count occurences of labels from Vision response
-                        visionCount[annotation.description]++
-                    })
-                })
+            //             //start count of a label(description) from Vision response if its the first time foun 
+            //             if (!visionCount[annotation.description]) {visionCount[annotation.description] = 1}
+            //             //count occurences of labels from Vision response
+            //             visionCount[annotation.description]++
+            //         })
+            //     })
 
-                //add vision information to the new div. Add the new div to the feed in the document. 
-                $(div).append(visionDiv)
+            //     //add vision information to the new div. Add the new div to the feed in the document. 
+            //     $(div).append(visionDiv)
                 $("#gifsDiv").prepend(div)
                 $("#gifsDiv").prepend("<hr>")
 
-                //create the report of the label count from vision responses from all GIFs in this GET
-                var visSumDiv = $("<div>")
-                visSumDiv.append($("<h3>").text(`Total Labels`))
-                visSumDiv.append($("<p>").text(`From all ${limit} GIFs, here is how many times each label was found in the Google Vision annotation.`))
-                Object.keys(visionCount).forEach((key) => {
-                    // visSumDiv.append($("<p>").text(`${key}: ${visionCount[key]}`))
-                    visSumDiv.append(`${visionCount[key]}: ${key}<br>`)
-                })
-                $("#visionSummeryDiv").html(visSumDiv)
-                $("#loadingDiv").empty()
-            }
+            //     //create the report of the label count from vision responses from all GIFs in this GET
+            //     var visSumDiv = $("<div>")
+            //     visSumDiv.append($("<h3>").text(`Total Labels`))
+            //     visSumDiv.append($("<p>").text(`From all ${limit} GIFs, here is how many times each label was found in the Google Vision annotation.`))
+            //     Object.keys(visionCount).forEach((key) => {
+            //         // visSumDiv.append($("<p>").text(`${key}: ${visionCount[key]}`))
+            //         visSumDiv.append(`${visionCount[key]}: ${key}<br>`)
+            //     })
+            //     $("#visionSummeryDiv").html(visSumDiv)
+            //     $("#loadingDiv").empty()
+            // }
         })
     })
     //this makes a button to get 256 gifs of the current topic
